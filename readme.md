@@ -1,3 +1,6 @@
+## DEMO
+[Demo](https://madsholten.github.io/PySPARQL2D3/)
+
 ## USE
 ```sh
 $ python PyS2D3.py -t fileA.ttl fileB.ttl -q query.rq
