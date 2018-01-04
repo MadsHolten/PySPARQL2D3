@@ -1,0 +1,30 @@
+CONSTRUCT {
+    ?interface a ?interfaceClass ;
+        ?interfaceOf ?wall , 
+            ?zone ;
+        prop:heatTransferArea ?hta ;
+        prop:surfaceResistance ?sr .
+    ?wall a ?wallClass ;
+        prop:VaporPermeability ?vp ;
+        prop:U-value ?Uv .
+    ?zone a ?zoneClass ;
+        prop:ambientTemperature ?at ;
+        prop:RH ?rh .
+}
+WHERE {
+    # SEMANTICS
+    ?wall a prod:Wall ,
+            ?wallClass .
+    ?interface a ?interfaceClass ;
+        bot:interfaceOf ?wall ;
+        ?interfaceOf ?wall ,
+            ?zone .
+    ?zone a ?zoneClass .
+    # PROPERTIES
+    OPTIONAL{ ?interface prop:heatTransferArea ?hta }
+    OPTIONAL{ ?interface prop:surfaceResistance ?sr }
+    OPTIONAL{ ?zone prop:ambientTemperature ?at }
+    OPTIONAL{ ?zone prop:RH ?rh}
+    OPTIONAL{ ?wall prop:VaporPermeability ?vp}
+    OPTIONAL{ ?wall prop:U-value ?Uv}
+}

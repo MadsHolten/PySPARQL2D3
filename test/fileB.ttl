@@ -1,0 +1,55 @@
+﻿# We already have the following:
+# <wall> a bot:Wall .
+# <space> a bot:Space .
+# <space> bot:adjacentElement <wall> .
+
+@prefix bot:    <https://w3id.org/bot#> .
+@prefix prod:   <https://w3id.org/prod#> .
+@prefix prop:   <https://w3id.org/prop#> .
+@prefix cdt:    <http://w3id.org/lindt/custom_datatypes#> .
+
+# Define class instance of site
+<https://forge-sparql.herokuapp.com/projects/P000001/Sites/a> a bot:Site .
+
+# Define class instance of wall
+<https://forge-sparql.herokuapp.com/projects/P000001/Walls/9808fd7f-dc48-478e-9217-628e833f66bf-00023076> 
+    a prod:Wall .
+
+# Define class instance of interfaces
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/a>
+    a bot:Interface .
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/b>
+    a bot:Interface .
+
+# Define interface relationships
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/a> 
+    bot:interfaceOf <https://forge-sparql.herokuapp.com/projects/P000001/Walls/9808fd7f-dc48-478e-9217-628e833f66bf-00023076> ,
+                    <https://forge-sparql.herokuapp.com/projects/P000001/Rooms/0b74b3fa-1a92-405e-9ac9-d59067bce2dd-0002ffbb> .
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/b>
+    bot:interfaceOf <https://forge-sparql.herokuapp.com/projects/P000001/Walls/9808fd7f-dc48-478e-9217-628e833f66bf-00023076> ,
+                    <https://forge-sparql.herokuapp.com/projects/P000001/Sites/a> .
+
+# Define room properties
+<https://forge-sparql.herokuapp.com/projects/P000001/Rooms/RoomA>
+	prop:ambientTemperature "20 °C"^^cdt:temperature ;
+	prop:RH "55 %"^^cdt:ucum ;
+	prop:RoomVolume "55m3"^^cdt:volume .
+
+# Define site properties
+<https://forge-sparql.herokuapp.com/projects/P000001/Sites/a>
+	prop:ambientTemperature "-12 °C"^^cdt:temperature ;
+	prop:RH "98 %"^^cdt:ucum .
+
+# Define properties of interface Room/Wall
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/a>
+	prop:heatTransferArea   "20.4 m2"^^cdt:area ;
+	prop:surfaceResistance  "0.13 m2K/W"^^cdt:ucum .
+
+# Define properties of interface Wall/Site
+<https://forge-sparql.herokuapp.com/projects/P000001/Interfaces/b>
+    prop:surfaceResistance  "0.04 m2K/W"^^cdt:ucum .
+
+# Define properties of element Wall
+<https://forge-sparql.herokuapp.com/projects/P000001/Walls/9808fd7f-dc48-478e-9217-628e833f66bf-00023076>
+	prop:VaporPermeability  "0.3 kg/(m s Pa)"^^cdt:ucum ;
+	prop:U-value "0.15 m2K/W"^^cdt:ucum .
