@@ -11,7 +11,7 @@ Arguments
 Flag            | Required | Description
 --------------- | -------- | -----------
 -t --triple     | X        | Path to one or more triple files in ttl-format
--q --query      | X        | SPARQL query string or path to a file containing the SPARQL query
+-q --query      |          | SPARQL query string or path to a file containing the SPARQL query. If no SPARQL query is given, the whole graph will be parsed.
 -p --prefixes   |          | Path to JSON-file with prefixes. Defaults to ./data/prefixes.json
 -o --output     |          | Path to output file. Defaults to ./data.json
 
