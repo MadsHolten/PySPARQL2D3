@@ -34,10 +34,7 @@ class PySPARQL2D3(object):
 
         return self.graph
 
-    def generateD3Triples(self, query, **kwargs):
-        # Get optional arguments
-        prefixesPath = kwargs.pop('prefixesPath', self.prefixesPath)
-        filePath = kwargs.pop('filePath', None)
+    def queryGraph(self,query):
 
         if '{' in query:
             queryString = query
@@ -45,16 +42,22 @@ class PySPARQL2D3(object):
             # If query is in a file, read it into a string
             with open(query, 'r') as f:
                 queryString = f.read()
-
-        # Perform query and get result
-        result = self.graph.query(queryString)
-
-        # If no result, return error
-        if len(result) == 0:
-            return "ERR: The query returned no result"
         
-        # Parse result to D3 format
-        triples = self._parse2D3(result,prefixesPath)
+        triples = self.graph.query(queryString)
+        
+        # If no triples in graph, return error
+        if len(triples) == 0:
+            return "ERR: The query returned no result"
+        else:
+            return triples
+
+    def generateD3Triples(self, graph, **kwargs):
+        # Get optional arguments
+        prefixesPath = kwargs.pop('prefixesPath', self.prefixesPath)
+        filePath = kwargs.pop('filePath', None)
+        
+        # Parse triples to D3 format
+        triples = self._parse2D3(graph,prefixesPath)
 
         # Write to file
         with open(filePath, 'w') as outfile:
@@ -90,7 +93,7 @@ def main():
     # Get arguments from stdin
     parser = argparse.ArgumentParser(description='Generate D3 JSON file')
     parser.add_argument('-t', '--triples', nargs='+', required=True, help='Path to one or more triple files in ttl-format')
-    parser.add_argument('-q', '--query', required=True, help='SPARQL query string or path to a file containing the SPARQL query')
+    parser.add_argument('-q', '--query', required=False, help='SPARQL query string or path to a file containing the SPARQL query')
     parser.add_argument('-p', '--prefixes', required=False, help='Path to JSON-file with prefixes. Defaults to ./data/prefixes.json')
     parser.add_argument('-o', '--output', required=False, help='Path to output file. Defaults to ./data.json')
 
@@ -107,8 +110,12 @@ def main():
     # Load data to in memory graph
     g = pd3.establishGraph(paths)
 
+    # Do query if one is specified
+    if query:
+        g = pd3.queryGraph(query)
+
     # Do query and write to D3-json
-    d3JSON = pd3.generateD3Triples(query,filePath=filePath,prefixesPath=prefixesPath)
+    d3JSON = pd3.generateD3Triples(g,filePath=filePath,prefixesPath=prefixesPath)
 
 
 if __name__ == "__main__":
